@@ -103,48 +103,6 @@ class HuwaiiView extends WatchUi.WatchFace {
     	
     	var clockTime = System.getClockTime();
     	var current_tick = System.getTimer();
-
-//		System.println("" + current_time_duration + ", " + sleep_time + ", " + wake_time);
-		
-////		System.println("" + is_in_sleep + ", " + Application.getApp().getProperty("sleep_time_behaviour") + ", " + did_clear);
-//		var sleep_time_behaviour = Application.getApp().getProperty("sleep_time_behaviour");
-//		if (sleep_time_behaviour == 1) {
-//			var profile = UserProfile.getProfile();
-//			var current_time_duration = clockTime.hour*3600 + clockTime.min*60 + clockTime.sec;
-//	    	var sleep_time = profile.sleepTime.value();
-//	    	var wake_time = profile.wakeTime.value();
-//		
-//			var is_in_sleep = false;
-//			if (wake_time < sleep_time) {
-//				// sleep before 24h wake after 24
-//				if (current_time_duration >= sleep_time) {
-//					is_in_sleep = true;
-//				} else if (current_time_duration <= wake_time) {
-//					is_in_sleep = true;
-//				}
-//			} else {
-//				// sleep & wake after 24
-//				if ((current_time_duration >= sleep_time) && (current_time_duration <= wake_time)) {
-//					is_in_sleep = true;
-//				}
-//			}
-//			
-//			if (is_in_sleep) {
-//				if (!did_clear) {
-//					dc.setColor(0x000000, 0x000000);
-//					dc.clear();
-//					did_clear = true;
-//				}
-//				return;
-//			} else {
-//				did_clear = false;
-//			}
-//		}
-    	
-//    	System.println("1");
-    	
-//    	System.println("update");
-//    	System.println("" + clockTime.min + ":" + clockTime.sec);
     	
     	// Calculate battery consumtion in days
     	var time_now = Time.now();
