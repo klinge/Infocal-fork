@@ -144,8 +144,13 @@
     <string id="barometer_unit">Barometer Unit</string>
     <string id="barometer_unit_0">Hector Pascal (Pa)</string>
     <string id="barometer_unit_1">Inches of Mercury (inHg)</string>
-    
-    <string id="openweathermap_api">OpenWeatherMap API key, read FAQs section for more info</string>
+
+    <string id="weatherSelectTitle">Select weather for..</string>
+    <string id="weather_alingsas">Alingsås</string>
+    <string id="weather_solna">Solna</string>
+    <string id="weather_falkenberg">Falkenberg</string>
+    <string id="weather_use_gps">Use current position(if available)..</string>
+    <string id="owmKeyTitle">OpenWeatherMap API key, insert own key here..</string>
 	
 	<string id="Mon">Mon</string>
 	<string id="Tue">Tue</string>
