@@ -67,25 +67,29 @@ class GraphComplication extends Ui.Drawable {
 	}
     
     function parse_data_value(type, value) {
-    	if (type==1) {
-			return value;
-	    } else if (type==2) {
-			if (settings.elevationUnits == System.UNIT_METRIC) {
+		switch (type) {
+			case 1:
+				return value;
+			case 2:
+				if (settings.elevationUnits == System.UNIT_METRIC) {
 				// Metres (no conversion necessary).
-				return value;
-			} else {
+					return value;
+				} else {
 				// Feet.
-				return  value*3.28084;
-			}
-	    } else if (type==3) {
-	    	return value/100.0;
-	    } else if (type==4) {
-		    if (settings.temperatureUnits == System.UNIT_STATUTE) {
-				return (value * (9.0 / 5)) + 32; // Convert to Farenheit: ensure floating point division.
-			} else {
-				return value;
-			}
-	    }
+					return  value*3.28084;
+				}
+			case 3:
+				return value/100.0;
+			case 4:
+				if (settings.temperatureUnits == System.UNIT_STATUTE) {
+					return (value * (9.0 / 5)) + 32; // Convert to Farenheit: ensure floating point division.
+				} else {
+					return value;
+				}
+			default:
+				//there was an error
+				return 0;
+		}
     }
     
     function draw(dc) {

@@ -789,10 +789,10 @@ class GroupNotiField extends BaseDataField {
 	
 	function cur_label(value) {
 		var settings = Sys.getDeviceSettings();
-		var value = settings.alarmCount;
-		var alarm_str = Lang.format("A$1$",[value.format("%d")]);
+		var valueAlarmCount = settings.alarmCount;
+		var alarm_str = Lang.format("A$1$",[valueAlarmCount.format("%d")]);
 		value = settings.notificationCount;
-		var noti_str = Lang.format("N$1$",[value.format("%d")]);
+		var noti_str = Lang.format("N$1$",[valueAlarmCount.format("%d")]);
 		
 		if (settings.phoneConnected) {
 			return Lang.format("$1$-$2$-C",[noti_str, alarm_str]);
@@ -866,7 +866,7 @@ class SunField extends BaseDataField {
 	
 	function cur_label(value) {
 		if (gLocationLat != null) {
-			var value = "";
+			//var value = "";
 			var nextSunEvent = 0;
 			var isSunriseNext = false;
 			var now = Date.info(Time.now(), Time.FORMAT_SHORT);
@@ -1097,7 +1097,7 @@ class TemparatureField extends BaseDataField {
 	
 	function cur_label(value) {
 		var need_minimal = App.getApp().getProperty("minimal_data");
-		var value = 0;
+		var valueTemp = 0;
 		var settings = Sys.getDeviceSettings();
 		if ((Toybox has :SensorHistory) && (Toybox.SensorHistory has :getTemperatureHistory)) {
 			var sample = SensorHistory.getTemperatureHistory(null).next();
@@ -1106,11 +1106,11 @@ class TemparatureField extends BaseDataField {
 				if (settings.temperatureUnits == System.UNIT_STATUTE) {
 					temperature = (temperature * (9.0 / 5)) + 32; // Convert to Farenheit: ensure floating point division.
 				}
-				value = temperature.format("%d") + "°";
+				valueTemp = temperature.format("%d") + "°";
 				if (need_minimal) {
-					return value;
+					return valueTemp;
 				} else {
-					return Lang.format("TEMP $1$",[value]);
+					return Lang.format("TEMP $1$",[valueTemp]);
 				}
 			} else {
 				if (need_minimal) {
@@ -1145,7 +1145,7 @@ class AltitudeField extends BaseDataField {
 	
 	function cur_label(value) {
 		var need_minimal = App.getApp().getProperty("minimal_data");
-		var value = 0;
+		var valueAlti = 0;
 		// #67 Try to retrieve altitude from current activity, before falling back on elevation history.
 		// Note that Activity::Info.altitude is supported by CIQ 1.x, but elevation history only on select CIQ 2.x
 		// devices.
@@ -1170,14 +1170,14 @@ class AltitudeField extends BaseDataField {
 				unit = "ft";
 			}
 	
-			value = altitude.format("%d");
-			value += unit;
+			valueAlti = altitude.format("%d");
+			valueAlti += unit;
 			if (need_minimal) {
-				return value;
+				return valueAlti;
 			} else {
-				var temp = Lang.format("ALTI $1$",[value]);
+				var temp = Lang.format("ALTI $1$",[valueAlti]);
 				if (temp.length() > 10) {
-					return Lang.format("$1$",[value]);
+					return Lang.format("$1$",[valueAlti]);
 				}
 				return temp;
 			}
@@ -1207,8 +1207,8 @@ class AlarmField extends BaseDataField {
 	
 	function cur_label(value) {
 		var settings = Sys.getDeviceSettings();
-		var value = settings.alarmCount;
-		return Lang.format("ALAR $1$",[value.format("%d")]);
+		var valueAlmField = settings.alarmCount;
+		return Lang.format("ALAR $1$",[valueAlmField.format("%d")]);
 	}
 }
 
@@ -1228,8 +1228,8 @@ class NotifyField extends BaseDataField {
 	
 	function cur_label(value) {
 		var settings = Sys.getDeviceSettings();
-		var value = settings.notificationCount;
-		return Lang.format("NOTIF $1$",[value.format("%d")]);
+		var valueNotifi = settings.notificationCount;
+		return Lang.format("NOTIF $1$",[valueNotifi.format("%d")]);
 	}
 }
 
@@ -1351,9 +1351,9 @@ class DistanceField extends BaseDataField {
 	}
 	
 	function max_label(value) {
-		var value = value/1000.0;
-		value = value/100.0; // convert cm to km
-    	var valKp = App.getApp().toKValue(value);
+		var valueMax = value/1000.0;
+		valueMax = valueMax/100.0; // convert cm to km
+    	var valKp = App.getApp().toKValue(valueMax);
     	return Lang.format("$1$K",[valKp]);
 	}
 	

@@ -18,22 +18,6 @@ var gLocationLng = null;
 var centerX;
 var centerY;
 
-hidden function degreesToRadians(degrees) {
-	return degrees * Math.PI / 180;
-}  
-
-hidden function radiansToDegrees(radians) {
-	return radians * 180 / Math.PI;
-}  
-
-hidden function convertCoorX(radians, radius) {
-	return centerX + radius*Math.cos(radians);
-}
-
-hidden function convertCoorY(radians, radius) {
-	return centerY + radius*Math.sin(radians);
-}
-
 (:background)
 class HuwaiiApp extends Application.AppBase {
 
@@ -43,25 +27,6 @@ class HuwaiiApp extends Application.AppBase {
 	
     function initialize() {
         AppBase.initialize();
-        days = {Date.DAY_MONDAY => "MON", 
-				Date.DAY_TUESDAY => "TUE", 
-				Date.DAY_WEDNESDAY => "WED", 
-				Date.DAY_THURSDAY => "THU", 
-				Date.DAY_FRIDAY => "FRI", 
-				Date.DAY_SATURDAY => "SAT", 
-				Date.DAY_SUNDAY => "SUN"};
-		months = {Date.MONTH_JANUARY => "JAN",
-				Date.MONTH_FEBRUARY => "FEB",
-				Date.MONTH_MARCH => "MAR",
-				Date.MONTH_APRIL => "APR",
-				Date.MONTH_MAY => "MAY",
-				Date.MONTH_JUNE => "JUN",
-				Date.MONTH_JULY => "JUL",
-				Date.MONTH_AUGUST => "AUG",
-				Date.MONTH_SEPTEMBER => "SEP",
-				Date.MONTH_OCTOBER => "OCT",
-				Date.MONTH_NOVEMBER => "NOV",
-				Date.MONTH_DECEMBER => "DEC"};
     }
 
     // onStart() is called on application start up
@@ -219,17 +184,46 @@ class HuwaiiApp extends Application.AppBase {
 	}
 	
 	function getFormatedDate() {
+		var rezStrings = Rez.Strings;
 		var now = Time.now();
 		var date = Date.info(now, Time.FORMAT_SHORT);
 		var date_formater = Application.getApp().getProperty("date_format");
+
+		//load date strings
+		var resourceArrayDays = [
+			rezStrings.Mon,
+			rezStrings.Tue,
+			rezStrings.Wed,
+			rezStrings.Thu,
+			rezStrings.Fri,
+			rezStrings.Sat,
+			rezStrings.Sun
+		];
+		var resourceArrayMonths = [
+			rezStrings.Jan,
+			rezStrings.Feb,
+			rezStrings.Mar,
+			rezStrings.Apr,
+			rezStrings.May,
+			rezStrings.Jun,
+			rezStrings.Jul,
+			rezStrings.Aug,
+			rezStrings.Sep,
+			rezStrings.Oct,
+			rezStrings.Nov,
+			rezStrings.Dec
+		];
+
+
 		if (date_formater == 0) {
 			if (Application.getApp().getProperty("force_date_english")) {
-				var day_of_weak = date.day_of_week;
-				return Lang.format("$1$ $2$",[days[day_of_weak], date.day.format("%d")]);
+				var day_of_week = date.day_of_week;
+				var dayString = Ui.loadResource(resourceArrayDays[day_of_week - 1]).toUpper();
+				return Lang.format("$1$ $2$", [dayString, date.day.format("%d")]);
 			} else {
-				var date = Date.info(now, Time.FORMAT_LONG);
-				var day_of_weak = date.day_of_week;
-				return Lang.format("$1$ $2$",[day_of_weak.toUpper(), date.day.format("%d")]);
+				date = Date.info(now, Time.FORMAT_LONG);
+				var day_of_week = date.day_of_week;
+				return Lang.format("$1$ $2$",[day_of_week.toUpper(), date.day.format("%d")]);
 			}
 		} else if (date_formater == 1) {
 			// dd/mm
@@ -255,17 +249,19 @@ class HuwaiiApp extends Application.AppBase {
 			var month = null;
 			if (Application.getApp().getProperty("force_date_english")) {
 				day = date.day;
-				month = months[date.month];
+				month = Ui.loadResource(resourceArrayMonths[date.month - 1]).toUpper();
 			} else {
-				var date = Date.info(now, Time.FORMAT_MEDIUM);
+				date = Date.info(now, Time.FORMAT_MEDIUM);
 				day = date.day;
-				month = months[date.month];
+				month = Ui.loadResource(resourceArrayMonths[date.month]).toUpper();
 			}
 			if (date_formater == 5) {
 				return Lang.format("$1$ $2$",[day.format("%d"), month]);
 			} else {
 				return Lang.format("$1$ $2$",[month, day.format("%d")]);
 			}
+		} else {
+			return "--";
 		}
 	}
 	
@@ -273,4 +269,22 @@ class HuwaiiApp extends Application.AppBase {
 		var valK = value/1000.0;
 		return valK.format("%0.1f");
 	}
+}
+
+// -------------------------------------
+//UTILITY FUNCTIONS
+function degreesToRadians(degrees) {
+	return degrees * Math.PI / 180;
+}  
+
+function radiansToDegrees(radians) {
+	return radians * 180 / Math.PI;
+}  
+
+function convertCoorX(radians, radius) {
+	return centerX + radius*Math.cos(radians);
+}
+
+function convertCoorY(radians, radius) {
+	return centerY + radius*Math.sin(radians);
 }
