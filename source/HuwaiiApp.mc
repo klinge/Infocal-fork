@@ -103,8 +103,9 @@ class HuwaiiApp extends Application.AppBase {
 		}
 		
 		// 2. Weather:
-		// Location must be available, weather or humidity (#113) data field must be shown.
-		if (gLocationLat != null) {
+		// Location must be available, or property set to get weather for a specific place
+		var owmSelect = getProperty("OpenWeatherMapSelect");
+		if (gLocationLat != null || owmSelect != 0) {
 
 			var owmCurrent = getProperty("OpenWeatherMapCurrent");
 

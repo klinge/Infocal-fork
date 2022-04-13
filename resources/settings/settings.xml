@@ -429,7 +429,7 @@
         	<listEntry value="1">@Strings.barometer_unit_1</listEntry>
         </settingConfig>
     </setting>
-    <setting propertyKey="@Properties.weather_select" title="@Strings.weatherSelectTitle">
+    <setting propertyKey="@Properties.OpenWeatherMapSelect" title="@Strings.weatherSelectTitle">
         <settingConfig type="list">
             <listEntry value="2675397">@Strings.weather_solna</listEntry>
             <listEntry value="2726756">@Strings.weather_alingsas</listEntry>
@@ -438,7 +438,7 @@
         </settingConfig>
     </setting>
 
-    <setting propertyKey="@Properties.openweathermap_api" title="@Strings.owmKeyTitle">
+    <setting propertyKey="@Properties.OpenWeatherMapApi" title="@Strings.owmKeyTitle">
         <settingConfig type="alphaNumeric" />
     </setting>
     <setting propertyKey="@Properties.ctext_input" title="@Strings.ctext">

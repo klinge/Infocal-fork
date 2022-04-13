@@ -20,11 +20,11 @@ class BackgroundService extends Sys.ServiceDelegate {
 		var pendingWebRequests = App.getApp().getProperty("PendingWebRequests");
 		if (pendingWebRequests != null) {
 			if (pendingWebRequests["OpenWeatherMapCurrent"] != null) {
-				var api_key = App.getApp().getProperty("openweathermap_api");
+				var api_key = App.getApp().getProperty("OpenWeatherMapApi");
 				if (api_key.length() == 0) {
 					api_key = "333d6a4283794b870f5c717cc48890b5"; // default apikey
 				}
-				Sys.println("Key " + api_key);
+				Sys.println("OWM hey " + api_key);
 				makeWebRequest(
 					"https://api.openweathermap.org/data/2.5/weather",
 					{
@@ -36,9 +36,9 @@ class BackgroundService extends Sys.ServiceDelegate {
 					method(:onReceiveOpenWeatherMapCurrent)
 				);
 			}
-		} /* else {
+		} else {
 			Sys.println("onTemporalEvent() called with no pending web requests!");
-		} */
+		}
 	}
 
 	// Sample invalid API key:
