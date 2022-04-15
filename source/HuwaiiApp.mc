@@ -105,7 +105,8 @@ class HuwaiiApp extends Application.AppBase {
 		// 2. Weather:
 		// Location must be available, or property set to get weather for a specific place
 		var owmSelect = getProperty("OpenWeatherMapSelect");
-		if (gLocationLat != null || owmSelect != 0) {
+		
+		if ( (owmSelect != 0) || (owmSelect == 0 && gLocationLat != null) ) {
 
 			var owmCurrent = getProperty("OpenWeatherMapCurrent");
 
@@ -117,18 +118,19 @@ class HuwaiiApp extends Application.AppBase {
 
 				// Existing data is older than 30 mins.
 				// TODO: Consider requesting weather at sunrise/sunset to update weather icon.
-				if ((Time.now().value() > (owmCurrent["dt"] + 900)) ||
- 
-				// Existing data not for this location.
-				// Not a great test, as a degree of longitude varies betwee 69 (equator) and 0 (pole) miles, but simpler than
-				// true distance calculation. 0.02 degree of latitude is just over a mile.
-				(((gLocationLat - owmCurrent["lat"]).abs() > 0.02) || ((gLocationLng - owmCurrent["lon"]).abs() > 0.02))) {
+				if ( Time.now().value() > (owmCurrent["dt"].toNumber() + 900 ) ) {
 					pendingWebRequests["OpenWeatherMapCurrent"] = true;
+				} else if (owmSelect == 0) {
+					// Existing data not for this location. Only used if getting weather by coords (owmSelect == 0)
+					// Not a great test, as a degree of longitude varies betwee 69 (equator) and 0 (pole) miles, but simpler than
+					// true distance calculation. 0.02 degree of latitude is just over a mile.
+					if ( ((gLocationLat - owmCurrent["lat"]).abs() > 0.02) || ((gLocationLng - owmCurrent["lon"]).abs() > 0.02) ) {
+						pendingWebRequests["OpenWeatherMapCurrent"] = true;
+					}
 				}
 			}
 		}
 		
-
 		// If there are any pending requests:
 		if (pendingWebRequests.keys().size() > 0) {
 			// Register for background temporal event as soon as possible.

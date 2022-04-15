@@ -195,8 +195,9 @@ class WindField extends BaseDataField {
         var weather_data = App.getApp().getProperty("OpenWeatherMapCurrent");
         if (weather_data != null) {
         	var settings = Sys.getDeviceSettings();
+			//TODO code crashes here.. 
 			var speed = weather_data["wind_speed"]*3.6; // kph
-			var direct = weather_data["wind_direct"];
+			var direct = weather_data["windDirect"];
 			
 			var direct_corrected = direct + 11.25;                                 					// move degrees to int spaces (North from 348.75-11.25 to 360(min)-22.5(max))
 			direct_corrected = direct_corrected < 360 ? direct_corrected : direct_corrected - 360;  // move North from 360-371.25 back to 0-11.25 (final result is North 0(min)-22.5(max))
