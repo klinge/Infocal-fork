@@ -196,7 +196,8 @@ class WindField extends BaseDataField {
         if (weather_data != null) {
         	var settings = Sys.getDeviceSettings();
 			//TODO code crashes here.. 
-			var speed = weather_data["wind_speed"]*3.6; // kph
+			var windSpeed = weather_data["windSpeed"].toFloat();
+			var windSpeedConv = windSpeed * 3.6; // kph
 			var direct = weather_data["windDirect"];
 			
 			var direct_corrected = direct + 11.25;                                 					// move degrees to int spaces (North from 348.75-11.25 to 360(min)-22.5(max))
@@ -206,7 +207,7 @@ class WindField extends BaseDataField {
 			var directLabel = wind_direction_mapper[direct_idx];
 			var unit = "k";
 			if (settings.distanceUnits == System.UNIT_STATUTE) {	
-				speed *= 0.621371;
+				windSpeed *= 0.621371;
 				unit = "m";				
 			}
 			return directLabel + " " + speed.format("%0.1f") + unit;
