@@ -31,7 +31,11 @@ class BarComplication extends Ui.Drawable {
 	    		position_y_draw = 89;//centerY - 36 - 18 - 14 - 8; // font height 14
 	    		position_y_draw_bonus = -36;
 	    		factor = 2;
-    		} else {
+    		} else if (centerX == 208) { //centerX for Venu2
+				position_y_draw = 89;//centerY - 36 - 18 - 14 - 8; // font height 14
+	    		position_y_draw_bonus = -36;
+	    		factor = 2;
+			} else {
 	    		position_y_draw = 44;//centerY - 36 - 18 - 14 + 5; // font height 14
 	    		position_y_draw_bonus = -13;
     		}
@@ -50,7 +54,11 @@ class BarComplication extends Ui.Drawable {
 	    		position_y_draw = 256;//centerY - 36 - 18 - 14 - 8; // font height 14
 	    		position_y_draw_bonus = 48;
 	    		factor = 2;
-    		}  else {
+    		} else if (centerX == 208) { //centerX for Venu2
+				position_y_draw = 256;//centerY - 36 - 18 - 14 - 8; // font height 14
+	    		position_y_draw_bonus = 48;
+	    		factor = 2;
+			}  else {
 	    		position_y_draw = 140;//centerY + 36 - 5;
 	    		position_y_draw_bonus = 29;
     		}
