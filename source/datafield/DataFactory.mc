@@ -210,7 +210,7 @@ class WindField extends BaseDataField {
 				windSpeed *= 0.621371;
 				unit = "m";				
 			}
-			return directLabel + " " + speed.format("%0.1f") + unit;
+			return directLabel + " " + windSpeed.format("%0.1f") + unit;
         }
         return "--";
 	}

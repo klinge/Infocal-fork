@@ -16,10 +16,10 @@ class BackgroundService extends Sys.ServiceDelegate {
 	// Pending web request flag will be cleared only once the background data has been successfully received.
 	(:background_method)
 	function onTemporalEvent() {
-		System.println("Started onTemporalEvent..");
 		var pendingWebRequests = App.getApp().getProperty("PendingWebRequests");
+		System.println("Started onTemporalEvent, pendingWebRequests is: " + pendingWebRequests);
 		//check if there are pending web requests
-		if (pendingWebRequests != null) {
+		if (pendingWebRequests.keys().size() > 0) {
 			//then check what type of web request it is
 			if (pendingWebRequests["OpenWeatherMapCurrent"] != null) {
 				
