@@ -55,6 +55,7 @@
     </drawable>
     
     <drawable id="digital" class="MainDialHand"></drawable>
-    <drawable id="analog" class="AnalogDial"></drawable>
+    <!-- Commenting out analog dial that is not used.. -->
+    <!--<drawable id="analog" class="AnalogDial"></drawable>-->
     
 </layout>

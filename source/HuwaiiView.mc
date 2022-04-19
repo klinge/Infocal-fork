@@ -350,19 +350,23 @@ class HuwaiiView extends WatchUi.WatchFace {
     
     // The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() {
+		/* TODO trying to remove analog part of UI
 		var dialDisplay = View.findDrawableById("analog");
 		if (dialDisplay != null) {
 			dialDisplay.enableSecondHand();
 		}
+		*/
     	checkBackgroundRequest();
     }
 
     // Terminate any active timers and prepare for slow updates.
     function onEnterSleep() {
-   		var dialDisplay = View.findDrawableById("analog");
+   		/* TODO trying to remove analog part of UI
+		var dialDisplay = View.findDrawableById("analog");
    		if (dialDisplay != null) {
 			dialDisplay.disableSecondHand();
 		}
+		*/
     }
 
 	function checkTheme() {

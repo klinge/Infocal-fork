@@ -1,3 +1,5 @@
+/* TESTING COMMENTING ENTIRE FILE 
+
 using Toybox.WatchUi as Ui;
 using Toybox.Math;
 using Toybox.Graphics;
@@ -266,3 +268,4 @@ class AnalogDial extends Ui.Drawable {
 		return clockTime.sec.toLong();
 	} 
 }
+*/
