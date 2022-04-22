@@ -23,7 +23,7 @@ class BackgroundService extends Sys.ServiceDelegate {
 			//then check what type of web request it is
 			if (pendingWebRequests["OpenWeatherMapCurrent"] != null) {
 				
-				System.println("getting weather!");
+				//System.println("getting weather!");
 				var api_key = App.getApp().getProperty("OpenWeatherMapApi");
 				
 				if (api_key.length() == 0) {
@@ -39,14 +39,34 @@ class BackgroundService extends Sys.ServiceDelegate {
 					getWeatherForCoords(api_key);
 				}
 			}
-			else {
-				System.println("Not implemented -getting SL departures!");
-				//getSLDepartures();
+			if (pendingWebRequests["GetSLDepartures"] != null) {
+				System.println("Calling getting SL departures!");
+				getSLDepartures();
 			} 
 		}
 		else {
 			Sys.println("onTemporalEvent() called with no pending web requests!");
 		}
+	}
+
+	(:background_method)
+	function getSLDepartures() {
+		//TODO use gps position to get nearest station and then get departures from that.. 
+		var station = "9509";
+		var apiKey = "43db3f9f91e541a68ffbb1f35784c813";
+		var timeDuration = "20";
+		
+		makeWebRequest(
+			"https://api.sl.se/api2/realtimedeparturesV4.json",
+			{
+				"siteid" => station,
+				"timewindow" => timeDuration,
+				"key" => apiKey,
+				"bus" => "false",
+				"tram" => "false"
+			},
+			method(:onReceiveSLData)
+		);
 	}
 
 	(:background_method)
@@ -77,7 +97,9 @@ class BackgroundService extends Sys.ServiceDelegate {
 			method(:onReceiveOpenWeatherMapCurrent)
 		);
 	}
-
+	/* 
+	 *  CALLBACK FUNCTIONS
+	 */
 	(:background_method)
 	function onReceiveOpenWeatherMapCurrent(responseCode, data) {
 		var result;
@@ -117,6 +139,45 @@ class BackgroundService extends Sys.ServiceDelegate {
 		});
 	}
 
+	(:background_method)
+	function onReceiveSLData(responseCode, data) {
+		var result = {}; 
+		// Useful data only available if result was successful.
+		// Filter and flatten data response for data that we actually need.
+		if (responseCode == 200) {
+			var filteredData = data["ResponseData"]["Trains"];
+			var tempRow = {};
+			var rowsArray = [];
+			var numRows = ( filteredData.size() > 4 ) ? 4 : filteredData.size(); //do not return more than 4 departures
+
+			for(var i = 0; i < numRows; i++) {
+				tempRow = {
+					"time" => filteredData[i]["ExpectedDateTime"],
+					"line" =>filteredData[i]["LineNumber"],
+					"dest" => filteredData[i]["Destination"],
+					"displayTime" => filteredData[i]["DisplayTime"]
+				};
+				rowsArray.add(tempRow);
+			}
+			result.put("CurrentDepartures", rowsArray);
+		} 
+		else {  //HTTP error
+			var errorMessage = "";
+			if(data != null) {
+				errorMessage = data["StatusCode"];
+			}
+			result = {
+				"httpError" => responseCode,
+				"message" => errorMessage
+			};
+		}
+		Background.exit( 
+			{ "SLDepartures" => result } 
+		);
+	
+	}
+
+	// helper method to make actual web requests..
 	(:background_method)
 	function makeWebRequest(url, params, callback) {
 		var options = {

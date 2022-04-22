@@ -102,8 +102,8 @@ class HuwaiiApp extends Application.AppBase {
 			pendingWebRequests = {};
 		}
 		
-		// 2. Weather:
-		// Location must be available, or property set to get weather for a specific place
+		// 1. Weather:
+		// Location must be available, or property set to get weather for a specific station
 		var owmSelect = getProperty("OpenWeatherMapSelect");
 		
 		if ( (owmSelect != 0) || (owmSelect == 0 && gLocationLat != null) ) {
@@ -129,6 +129,15 @@ class HuwaiiApp extends Application.AppBase {
 					}
 				}
 			}
+			// 2. SL Departures:
+			// are there any preconditions
+			var SLDepartures = getProperty("SLDepartures");
+			if ( SLDepartures == null ) {
+				pendingWebRequests["GetSLDepartures"] = true;
+			} else {
+				//TODO what to do if we already have data.. 
+			}
+			
 		}
 		
 		// If there are any pending requests:
@@ -166,23 +175,27 @@ class HuwaiiApp extends Application.AppBase {
 //			//Sys.println("onBackgroundData() called with no pending web requests!");
 			pendingWebRequests = {};
 		}
+		// check how many results we have..  
+		var numResults = data.keys().size();
 
-		var type = data.keys()[0]; // Type of received data.
-		var storedData = getProperty(type);
-		var receivedData = data[type]; // The actual data received: strip away type key.
-		
-		// No value in showing any HTTP error to the user, so no need to modify stored data.
-		// Leave pendingWebRequests flag set, and simply return early.
-		if (receivedData["httpError"]) {
-			return;
+		//loop over results and save them to properties, remove pending web request flag
+		for(var i = 0; i < numResults; i++) {
+			var type = data.keys()[0]; // Type of received data.
+			var storedData = getProperty(type);
+			var receivedData = data[type]; // The actual data received: strip away type key.
+			
+			// No value in showing any HTTP error to the user, so no need to modify stored data.
+			// Leave pendingWebRequests flag set, and simply return early.
+			if (receivedData["httpError"]) {
+				return;
+			}
+
+			// New data received: clear pendingWebRequests flag and overwrite stored data.
+			storedData = receivedData;
+			pendingWebRequests.remove(type);
+			setProperty("PendingWebRequests", pendingWebRequests);
+			setProperty(type, storedData);
 		}
-
-		// New data received: clear pendingWebRequests flag and overwrite stored data.
-		storedData = receivedData;
-		pendingWebRequests.remove(type);
-		setProperty("PendingWebRequests", pendingWebRequests);
-		setProperty(type, storedData);
-
 		Ui.requestUpdate();
 	}
 	
