@@ -133,7 +133,7 @@ class HuwaiiApp extends Application.AppBase {
 			// are there any preconditions
 			var SLDepartures = getProperty("SLDepartures");
 			if ( SLDepartures == null ) {
-				pendingWebRequests["GetSLDepartures"] = true;
+				pendingWebRequests["SLDepartures"] = true;
 			} else {
 				//TODO what to do if we already have data.. 
 			}
